@@ -1,4 +1,4 @@
-# . gitignore - Fichiers a ne PAS versionner
+# . gitignore->Fichiers a ne PAS versionner donc a ignorer car trop lourds ou pas necessaire 
 # Environnement Python
 __pycache__ /
 *. pyc
