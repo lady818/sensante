@@ -257,6 +257,7 @@
 
         // URL de l'API (a changer si l'API est ailleurs)
         const API_URL = "http://localhost:8000";
+        const historique = [];
 
         async function diagnostiquer() {
 
@@ -338,6 +339,18 @@
                 // 6. Lire le resultat
                 const resultat = await response.json();
 
+                const consultation = {
+                    nom: `${patient.sexe}, ${patient.age} ans`,
+                    diagnostic: resultat.diagnostic,
+                    probabilite: Math.round(resultat.probabilite * 100)
+                };
+
+                historique.unshift(consultation);
+
+                if (historique.length > 5) {
+                    historique.pop();
+                }
+
                 // 7. Afficher le resultat
                 afficherResultat(resultat);
 
@@ -407,6 +420,16 @@
             };
 
             const c = couleurs[r.diagnostic] || couleurs.sain;
+            const icones = {
+                paludisme: "🌡️",
+                palu: "🌡️",
+                grippe: "❄️",
+                typhoide: "⚠️",
+                typh: "⚠️",
+                sain: "✅",
+                erreur: "❌"
+            };
+            const icone = icones[r.diagnostic] || "🩺";
             const pct = Math.round(r.probabilite * 100);
             const section = document.getElementById("result-section");
 
@@ -416,7 +439,10 @@
 
                     <div class="${c.bg} rounded-lg p-4 mb-4">
                         <p class="text-sm text-gray-600">Diagnostic :</p>
-                        <p class="text-2xl font-bold ${c.text} uppercase mt-1">${r.diagnostic}</p>
+                        <div class="flex items-center gap-3 mt-1">
+                            <span class="text-3xl">${icone}</span>
+                            <p class="text-2xl font-bold ${c.text} uppercase">${r.diagnostic}</p>
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -438,6 +464,8 @@
                     <div class="bg-gray-50 rounded-lg p-3">
                         <p class="text-sm text-gray-700">${r.message}</p>
                     </div>
+
+                    ${afficherHistorique()}
                 </div>
             `;
         }
@@ -452,6 +480,40 @@
                     <div class="bg-red-100 border border-red-200 text-red-800 rounded-lg p-4">
                         <p class="font-semibold mb-1">Erreur</p>
                         <p class="text-sm">${message}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function afficherHistorique() {
+            if (historique.length === 0) {
+                return "";
+            }
+
+            const lignes = historique.map((item) => `
+                <tr class="border-t border-gray-100">
+                    <td class="py-2 pr-2 text-sm text-gray-700">${item.nom}</td>
+                    <td class="py-2 px-2 text-sm text-gray-700 uppercase">${item.diagnostic}</td>
+                    <td class="py-2 pl-2 text-sm text-gray-700">${item.probabilite}%</td>
+                </tr>
+            `).join("");
+
+            return `
+                <div class="mt-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">Historique des consultations</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-sm text-gray-500 border-b border-gray-200">
+                                    <th class="pb-2 pr-2">Patient</th>
+                                    <th class="pb-2 px-2">Diagnostic</th>
+                                    <th class="pb-2 pl-2">Probabilite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${lignes}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
