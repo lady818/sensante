@@ -11,6 +11,18 @@ pinned: false
 
 Assistant de pre-diagnostic medical pour le Senegal.
 
+## Demo en ligne
+
+https://mamesadio-sensante.hf.space
+
+## Stack
+
+- scikit-learn (modele ML)
+- FastAPI (API REST)
+- Tailwind CSS (frontend responsive)
+- Groq / Llama 3 (explication LLM)
+- Docker (conteneurisation)
+
 ## Description
 
 SenSante utilise le machine learning pour aider au pre-diagnostic des
@@ -50,7 +62,6 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_exploration.ps1
 ```
 
 ## Attention au fichier de donnees
-
 Le script attend un vrai fichier CSV dans :
 
 `data/patients_dakar.csv`
@@ -60,9 +71,7 @@ s'arretera avec un message explicite. Dans ce cas, remplace ce fichier
 par le vrai export CSV avant de relancer.
 
 ## Auteur
-
 Mame Sadio Guisse - L2 GLSI B - ESP/UCAD
 
 ## Cours
-
 Integration de Modeles IA - Dr. El Hadji Bassirou TOURE
