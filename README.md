@@ -1,3 +1,12 @@
+---
+title: Sensante
+emoji: "📊"
+colorFrom: yellow
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # SenSante
 
 Assistant de pre-diagnostic medical pour le Senegal.

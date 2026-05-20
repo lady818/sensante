@@ -221,3 +221,18 @@ def explain(data: ExplainInput):
         explication=explication,
         modele_llm="llama-3.1-8b-instant",
     )
+
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Servir le frontend comme fichiers statiques
+app.mount(
+    "/static",
+    StaticFiles(directory="frontend"),
+    name="static"
+)
+
+@app.get("/")
+def serve_frontend():
+    """Servir la page d'accueil."""
+    return FileResponse("frontend/index.html")
